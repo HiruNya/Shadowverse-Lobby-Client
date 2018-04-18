@@ -1,0 +1,6 @@
+[package]
+name = "Shadowverse-Lobby-Client"
+version = "0.1.0"
+authors = ["Hiruna Jayamanne <hirunav2@gmail.com>"]
+
+[dependencies]
