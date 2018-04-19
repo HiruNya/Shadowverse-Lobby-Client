@@ -4,3 +4,7 @@ version = "0.1.0"
 authors = ["Hiruna Jayamanne <hirunav2@gmail.com>"]
 
 [dependencies]
+crossbeam-channel = "0.1"
+serde = "1.0"
+serde_derive = "1.0"
+serde_json = "1"
