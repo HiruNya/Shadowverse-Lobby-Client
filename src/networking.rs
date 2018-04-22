@@ -24,5 +24,6 @@ pub fn update_game(game: Game) -> Result<(), Error> {
     let request = parse::game(game)
         .expect("Error parsing the game struct into a String");
     stream.write_all(request.as_bytes())?;
+//    stream.write_all("{\"UpdateGame\":{\"name\":\"A Game\",\"author\":\"Hiruna\",\"join_code\":\"00x0\"}}".as_bytes())?;
     Ok(())
 }

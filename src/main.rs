@@ -3,6 +3,11 @@ extern crate serde;
 extern crate serde_json;
 #[macro_use]
 extern crate serde_derive;
+#[macro_use]
+extern crate conrod;
+extern crate piston_window;
+extern crate gtk;
+extern crate clipboard;
 
 use crossbeam_channel::{unbounded, Sender, Receiver};
 use std::thread::spawn;
@@ -10,6 +15,9 @@ use std::thread::spawn;
 mod networking;
 mod parse;
 mod data;
+//mod gui;
+mod gui_gtk;
+use gui_gtk as gui;
 use networking::{get_cache, update_game};
 use data::*;
 
@@ -18,7 +26,12 @@ fn main() {
     let (sender, receiver): (Sender<MsgToController>, Receiver<MsgToController>) = unbounded();
     // Communicate to the GUI
     let (gui_sender, gui_receiver): (Sender<MsgToGui>, Receiver<MsgToGui>) = unbounded();
-    for msg in receiver.recv() {
+
+    let c_sender = sender.clone();
+    spawn(||{gui::start(c_sender, gui_receiver);});
+
+    // Main loop
+    for msg in receiver.iter() {
         use MsgToController::*;
         match msg {
             Shutdown => break,
@@ -39,11 +52,12 @@ fn main() {
                 });
             },
             CacheReceived(game_list) => {
-                let mut current_list = Vec::new();
-                for (i, g) in game_list.iter().enumerate() {
-                    if i == 10 {break};
-                };
-                gui_sender.send(MsgToGui::PopulateList(current_list));
+                gui_sender.send(MsgToGui::PopulateList(game_list));
+//                let mut current_list = Vec::new();
+//                for (i, g) in game_list.iter().enumerate() {
+//                    if i == 10 {break};
+//                };
+//                gui_sender.send(MsgToGui::PopulateList(current_list));
             },
             UpdateGame(game) => {
                 match update_game(game) {
