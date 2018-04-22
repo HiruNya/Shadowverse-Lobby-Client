@@ -3,9 +3,9 @@ extern crate serde;
 extern crate serde_json;
 #[macro_use]
 extern crate serde_derive;
-#[macro_use]
-extern crate conrod;
-extern crate piston_window;
+// #[macro_use]
+// extern crate conrod;
+// extern crate piston_window;
 extern crate gtk;
 extern crate clipboard;
 
@@ -15,7 +15,7 @@ use std::thread::spawn;
 mod networking;
 mod parse;
 mod data;
-//mod gui;
+// mod gui;
 mod gui_gtk;
 use gui_gtk as gui;
 use networking::{get_cache, update_game};
